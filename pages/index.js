@@ -3,7 +3,7 @@ import { Sidebar } from '../components/Sidebar'
 
 export default function Home() {
   return (
-    <div className="">
+    <div className="bg-black">
       <Head>
         <title>Create Next App</title>
       </Head>
