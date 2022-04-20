@@ -11,7 +11,6 @@ export const middleware = async (req) => {
 
     // 1. it's a request for next-auth session & provider fetching
     // 2. if the token exists
-
     if (pathname.includes('/api/auth') || token) {
         return NextResponse.next();
     }
