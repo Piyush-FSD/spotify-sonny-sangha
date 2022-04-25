@@ -1,8 +1,22 @@
 import { HeartIcon, HomeIcon, LibraryIcon, PlusCircleIcon, RssIcon, SearchIcon } from '@heroicons/react/outline'
 import { signOut, useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import { useSpotify } from '../hooks/useSpotify';
 
 export const Sidebar = () => {
+    const spotifyAPI = useSpotify()
     const { data: session, status } = useSession()
+    const [playlists, setPlaylists] = useState([])
+
+    useEffect(() => {
+        if (spotifyAPI.getAccessToken()) {
+            spotifyAPI.getUserPlaylists().then((data) => {
+                setPlaylists(data.body.items)
+            })
+        }
+    }, [session, spotifyAPI])
+
+    console.log(playlists)
 
     return (
         <div className='text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll scrollbar-hide h-screen'>
@@ -41,19 +55,14 @@ export const Sidebar = () => {
                 </button>
                 <hr className='border-t-{0.1px} border-gray-900' />
 
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
-                <p className='cursor-pointer hover:text-white'>Playlist name...</p>
+
+                {playlists.map((item) => (
+                    <p key={item.id} className="cursor-pointer hover:text-white">
+                        {item.name}
+                    </p>
+                ))}
+
             </div>
-        </div>
+        </div >
     )
 }
