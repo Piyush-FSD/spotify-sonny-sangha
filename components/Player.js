@@ -38,6 +38,18 @@ export const Player = () => {
         }
     }
 
+    const handlePlayPause = () => {
+        spotifyAPI.getMyCurrentPlaybackState().then((data) => {
+            if (data.body.is_playing) {
+                spotifyAPI.pause()
+                setIsPlaying(false)
+            } else {
+                spotifyAPI.play()
+                setIsPlaying(true)
+            }
+        })
+    }
+
     useEffect(() => {
         if (spotifyAPI.getAccessToken() && !currentTrackId) {
             fetchCurrentSong()
@@ -65,13 +77,26 @@ export const Player = () => {
                 <RewindIcon className="button" />
 
                 {isPlaying ? (
-                    <PauseIcon className="button w-10 h-10" />
+                    <PauseIcon onClick={handlePlayPause} className="button w-10 h-10" />
                 ) : (
-                    <PlayIcon className="button w-10 h-10" />
+                    <PlayIcon onClick={handlePlayPause} className="button w-10 h-10" />
                 )}
 
                 <FastForwardIcon className="button" />
                 <ReplyIcon className="button" />
+            </div>
+
+            {/*Right*/}
+            <div className="flex items-center space-x-3 md:space-x-4 justify-end pr-5">
+                <VolumeDownIcon className="button" />
+                <input
+                    className="w-14 md:w-28"
+                    type="range"
+                    value={volume}
+                    min={0}
+                    max={100}
+                />
+                <VolumeUpIcon className="button" />
             </div>
         </div>
     )
