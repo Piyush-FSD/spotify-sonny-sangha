@@ -4,6 +4,19 @@ import { useRecoilState } from "recoil"
 import { currentTrackIdState, isPlayingState } from "../atoms/songAtom"
 import { useEffect, useState } from "react"
 import { useSongInfo } from "../hooks/useSongInfo"
+import {
+    HeartIcon,
+    VolumeUpIcon as VolumeDownIcon
+} from "@heroicons/react/outline"
+import {
+    RewindIcon,
+    FastForwardIcon,
+    PauseIcon,
+    PlayIcon,
+    ReplyIcon,
+    VolumeUpIcon,
+    SwitchHorizontalIcon
+} from "@heroicons/react/solid"
 
 export const Player = () => {
     const spotifyAPI = useSpotify()
@@ -39,11 +52,26 @@ export const Player = () => {
                 <img
                     className="hidden md:inline h-10 w-10"
                     src={songInfo?.album.images?.[0]?.url}
-                    alt="" />
+                    alt=""
+                />
                 <div>
                     <h3>{songInfo?.name}</h3>
                     <p>{songInfo?.artists?.[0]?.name}</p>
                 </div>
+            </div>
+            {/*Center*/}
+            <div className="flex items-center justify-evenly">
+                <SwitchHorizontalIcon className="button" />
+                <RewindIcon className="button" />
+
+                {isPlaying ? (
+                    <PauseIcon className="button w-10 h-10" />
+                ) : (
+                    <PlayIcon className="button w-10 h-10" />
+                )}
+
+                <FastForwardIcon className="button" />
+                <ReplyIcon className="button" />
             </div>
         </div>
     )
